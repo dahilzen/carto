@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stau in Heilbronn | stimme.de</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://static1.heilbronnerstimme.de/data/images/layout/favicon.ico" />
+    
+    <meta property="og:url"           content="http://www.stimme.de/ltw16" />
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="Landtagswahl BaWü 2016" />
+	<meta property="og:description"   content="Stimme-Berichterstattung zur Landtagswahl 2016" />      
+      
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+        
+        div.cartodb-tooltip {
+            left: 55px !important;
+            top: 75px !important;
+            min-width: 300px !important;
+            min-height: 500px !important;
+        }
+			
+		.header {
+			height: 55px; 
+			width: 100%;  
+			border-bottom: 1px solid #eee; 
+			box-shadow: 0 2px 4px rgba(0, 0, 0, .08); 
+			position: absolute; 
+			z-index: 999999999; 
+			background: rgba(255, 255, 255, 255);
+			padding: 0 0 0 15px;
+			}
+				
+		.logo{
+			width:auto;
+			height: 40px;
+			float: left !important;
+			}
+			
+		.header h1 {
+			float: left;
+			font-size: 20px;
+			line-height: 19px;
+			font-weight: normal;
+			color: #000;
+			padding-left: 10px;
+			margin-top: .4em;
+			}	
+						
+		.header h1 .light {
+			font-family: Source Sans Pro, Arial;
+			font-size: 20px;
+			font-weight: bold;
+			line-height: 30px;
+			color: #000;
+			margin-right: 15px;
+			}
+	
+		.header p {
+			font-size: 15px;
+			padding:  0 0 0 0;
+			}
+			
+		.header .separator {
+			float: left;
+			width: 1px;
+			height: 20px;
+			background: #b1b1b1;
+			margin-right: 10px;
+			margin-top: 5px;
+			}
+			
+		.header .mobile-headline {
+			display: none;
+			float: left;
+			font-size: 14px;
+			font-weight: normal;
+			color: #000;
+			padding-left: 10px;
+			border-left: 1px solid #b1b1b1;
+			}	
+        
+        .headerbody {
+            float: left;
+            padding-left: 30px;
+            padding-top: 5px;
+        }
+
+        .sharing-container {
+            float: right;
+            padding-right: 80px;
+            padding-top: 13px;
+        }
+        
+        ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            }
+        
+        .sharelist{
+            display: inline;
+            margin: 0 0.2rem;
+            }
+        
+        .shareico {
+          width: 30px;
+          height: 30px;
+        }
+        
+        .leaflet-zoom-box{
+            position:absolute;
+            right:0 !important;
+            top:0}
+        
+        
+    </style>
+      
+
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+  </head>
+  <body>
+      
+      
+      
+	<div class="header group">
+		<div class="headerbody">
+            <ul>
+			<li class="sharelist">   <a href="http://www.stimme.de/ltw16">
+			<img class="logo" src="img/logo.png"></a></li>
+			
+			<li class="sharelist"> <h1 class="desktop-headline">
+				<div class="separator"></div>
+				<span class="light">Staukarte Region Heilbronn</span>
+                </h1> </li>
+            </ul>    
+        </div>
+
+		
+		<h1 class="mobile-headline">Staukarte Heilbronn</h1>
+            
+            
+        <div class="sharing-container">
+            <ul>
+              <li class="sharelist">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.stimme.de%2Fltw16" target="_blank" >
+                    <img class="shareico"  src="img/facebook.png" alt="Facebook Share Icon"></a>
+                </li>
+              <li class="sharelist">
+                    <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fwww.stimme.de%2Fltw16" target="_blank">
+                    <img class="shareico" src="img/twitter.png" alt="Twitter Share Icon"></a>
+                </li>
+            </ul>
+        </div>
+	</div>
+    
+	<div id="map"></div>      
+      
+      
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+	
+	<script>
+
+	 
+	 //Änderung des Cursors bei Mouse-Hover
+	function addCursorInteraction(layer) {
+        var hovers = [];
+        layer.bind('featureOver', function(e, latlon, pxPos, data, layer) {
+          hovers[layer] = 1;
+          if(_.any(hovers)) {
+            $('#map').css('cursor', 'pointer');
+          }
+        });
+        layer.bind('featureOut', function(m, layer) {
+          hovers[layer] = 0;
+          if(!_.any(hovers)) {
+            $('#map').css('cursor', 'auto');
+          }
+        });
+      }
+
+
+	function main() {
+      // Leaflet-Karte holen
+		var map = new L.Map('map', {
+          center: [49.1708715,9.2156855],
+          zoom: 12,
+          shareable: true,
+		  title: true,
+          zoomControl: false,
+        });
+		
+        
+
+    //Einen Baselayer bestimmen, meistens MapBox-Karte
+
+          L.tileLayer('https://api.mapbox.com/v4/gabonn.lcd5ii3a/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RpbW1lIiwiYSI6ImNpamVhZnhnbTAwYTh1NmpiaTExYzdteG8ifQ.z1I6AXqcVhrI0pqjvLCf1A', {
+            attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+        }).addTo(map);
+        
+		 //Grundebene der Karte holen
+      var layerUrl = 'https://stimmeonline.cartodb.com/api/v2/viz/e1f68f2e-c445-11e5-859b-0ecd1babdde5/viz.json';
+        
+        
+
+      //Die Ebene auf der Karte anzeigen
+      cartodb.createLayer(map, layerUrl)
+        .addTo(map)
+		
+		.on('done', function(layer) {
+		
+      var sublayer = layer.getSubLayer(0);
+	  layer.getSubLayer(0).setInteraction(true);
+		addCursorInteraction(layer);
+		
+        }).on('error', function() {     //log the error
+    });
+}
+
+        
+      // you could use $(window).load(main);
+      window.onload = main;
+    </script>
+  </body>
+</html>
