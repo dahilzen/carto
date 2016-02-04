@@ -6,7 +6,11 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="http://static1.heilbronnerstimme.de/data/images/layout/favicon.ico" />
     
+<<<<<<< HEAD
+    <meta property="og:url"           content="http://www.stimme.de/3565667" />
+=======
     <meta property="og:url"           	  content="http://www.stimme.de/3565667" />
+>>>>>>> origin/master
 	<meta property="og:type"          content="website" />
 	<meta property="og:title"         content="Verkehrskarte Heilbronn" />
 	<meta property="og:description"   content="Wir haben unsere Leser gefragt, wo in der Region der Verkehr am schlimmsten stockt. Das sind die Ergebnisse." />      
@@ -23,6 +27,8 @@
             top: 75px !important;
             min-width: 300px !important;
             min-height: 500px !important;
+            border-radius: 5px;
+            font-family: Source Sans Pro, Arial;        
         }
 			
 		.header {
@@ -113,10 +119,30 @@
           height: 30px;
         }
         
-        .leaflet-zoom-box{
-            position:absolute;
-            right:0 !important;
-            top:0}
+        .textkasten {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: rgba(255, 255, 255, 255);
+            opacity: 0.8;
+            max-width: 300px !important;
+            max-height: 700px !important;
+            z-index: 999999999; 
+            text-align:justify;
+            border-radius: 5px;
+    		font-family: Source Sans Pro, Arial;        
+        }
+        
+        .textkasten p {
+            font-size:12px;
+            padding-left: 15px;
+            padding-right: 10px;
+        } 
+        .textkasten h1 {
+            font-size:24px;
+            padding-left: 15px;
+            padding-right: 10px;
+        } 
         
         
     </style>
@@ -124,8 +150,7 @@
 
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
   </head>
-  <body>
-      
+  <body>  
       
       
 	<div class="header group">
@@ -148,16 +173,28 @@
         <div class="sharing-container">
             <ul>
               <li class="sharelist">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.stimme.de%2Fltw16" target="_blank" >
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.stimme.de%2F3565667" target="_blank" >
                     <img class="shareico"  src="img/facebook.png" alt="Facebook Share Icon"></a>
                 </li>
               <li class="sharelist">
-                    <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fwww.stimme.de%2Fltw16" target="_blank">
+                    <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Fwww.stimme.de%2F3565667" target="_blank">
                     <img class="shareico" src="img/twitter.png" alt="Twitter Share Icon"></a>
                 </li>
             </ul>
         </div>
 	</div>
+      
+    <div class="textkasten">
+        <h1>„Ich brauch’ 40 Minuten für fünf Kilometer“</h1>
+        
+        <p><b>REGION</b> Facebook-User benennen ihre größten Aufreger im Straßenverkehr</p>
+ 
+<p>„Ein Unding, furchtbar, ’ne Frechheit.“ Die Reaktionen von Menschen aus der Region fallen mitunter heftig aus. Verkehr ist ein Aufregerthema. Da hält keiner mit seiner Meinung hinterm Berg. Jeder hat ein ganz persönliche Sicht auf Ampelschaltungen, Tempolimits oder Straßenführungen.</p>
+        <p>Die Heilbronner Stimme hat im Vorfeld dieser Themenausgabe ihre Facebook-Freunde aufgefordert, die aus ihrer Sicht kritischsten Stellen zu benennen. Die Kommentare offenbaren Frust über die Strecke zwischen Europaplatz und K3, geschimpft wird über die Allee, Kopfschütteln über die Verengung der Saarlandstraße von zwei auf eine Fahrspur, um Platz für einen neuen Radweg zu schaffen. Mancher könnte sich vorstellen, auf den Bus umzusteigen, wenn es denn eine Verbindung gäbe. Eine Auswahl der vielen Kommentare ist auf dieser Karte zusammengestellt. <i>kik</i></p>
+      </div>
+      
+      
+      
     
 	<div id="map"></div>      
       
@@ -202,7 +239,7 @@
     //Einen Baselayer bestimmen, meistens MapBox-Karte
 
           L.tileLayer('https://api.mapbox.com/v4/gabonn.lcd5ii3a/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3RpbW1lIiwiYSI6ImNpamVhZnhnbTAwYTh1NmpiaTExYzdteG8ifQ.z1I6AXqcVhrI0pqjvLCf1A', {
-            attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+            attribution: 'Programmiert von <a href="http://www.twitter.com/dahilzen">David Hilzendegen</a> | Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
         }).addTo(map);
         
 		 //Grundebene der Karte holen
